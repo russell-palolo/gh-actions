@@ -1,5 +1,6 @@
+/* eslint-disable react/react-in-jsx-scope */
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import MainContent from './MainContent';
