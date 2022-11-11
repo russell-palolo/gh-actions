@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -20,6 +20,19 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Fetch Dependencies
+        run: npm ci
       - name: Test
         id: test-step
         run: npm run test
@@ -74,8 +87,6 @@ jobs:
   # if workflow execution fails output github context data
   report:
     needs:
-      - test
-      - build
       - deploy
     if: failure()
     runs-on: ubuntu-latest
