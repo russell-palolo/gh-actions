@@ -47,6 +47,8 @@ jobs:
           sleep 2
 
   build:
+    needs:
+      - hello
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
