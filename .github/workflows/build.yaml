@@ -73,6 +73,10 @@ jobs:
         run: echo "Deploying..."
   # if workflow execution fails output github context data
   report:
+    needs:
+      - test
+      - build
+      - deploy
     if: failure()
     runs-on: ubuntu-latest
     steps:
