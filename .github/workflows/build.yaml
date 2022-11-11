@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: print deploy output
-        run: echo ${{ needs.deploy.outputs.result }}
+        run: echo "${{ needs.deploy.outputs.result }}"
   # if workflow execution fails output github context data
   report:
     needs:
