@@ -83,6 +83,12 @@ jobs:
     with:
       artifact-name: dist-files
       script-file: ${{ needs.build.outputs.script-file }}
+  print-deploy-result:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: print deploy output
+        run: echo ${{ needs.deploy.outputs.result }}
   # if workflow execution fails output github context data
   report:
     needs:
