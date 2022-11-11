@@ -1,0 +1,11 @@
+name: Setup
+
+description: "Setup the database for other workflows"
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Run a one-line script
+      run: echo Hello, world!
+      shell: bash
