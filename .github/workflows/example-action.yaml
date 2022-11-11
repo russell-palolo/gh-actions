@@ -29,8 +29,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE,
       # so your job can access it
+      # using official github maintained action
       # - uses: actions/checkout@v3
-      - uses: russell-palolo/checkout@v3
+      # using personal fork of an action
+      - uses: russell-palolo/checkout
 
       # Runs a custom action from our repository
       - uses: ./.github/actions/hello
