@@ -21,8 +21,15 @@ jobs:
       - name: Lint
         run: npm run lint
       - name: Test
+        id: test-step
         run: npm run test
-
+        # if test step fails save the test execution artifact
+      - name: Upload test report
+        if: failure() && steps.test-step.outcome == 'failure'
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: test.json
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -50,10 +57,6 @@ jobs:
         with:
           name: dist-files
           path: dist
-          # path: |
-          #   dist
-          #   package.json
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
