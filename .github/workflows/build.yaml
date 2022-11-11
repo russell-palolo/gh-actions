@@ -71,6 +71,7 @@ jobs:
         run: echo "${{ needs.build.outputs.script-file }}"
       - name: Deployment
         run: echo "Deploying..."
+  # if workflow execution fails output github context data
   report:
     if: failure()
     runs-on: ubuntu-latest
