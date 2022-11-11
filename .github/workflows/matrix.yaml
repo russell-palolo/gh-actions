@@ -17,6 +17,13 @@ jobs:
         os-system:
           - ubuntu-latest
           - windows-latest
+        exclude:
+          - node-version: 12
+            os-system: windows-latest
+        include:
+          - node-version: 18
+            os-system: ubuntu-latest
+
     runs-on: ${{ matrix.os-system }}
     steps:
       - name: Checkout Repo
