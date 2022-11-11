@@ -28,20 +28,18 @@ jobs:
     # Steps represent a sequence of tasks to be executed
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE,
-      # so your job can access it
-      # using official github maintained action
-      # - uses: actions/checkout@v3
-      # using personal fork of an action
-
       - name: Checkout
-        uses: russell-palolo/checkout@main
+        # using official github maintained action
+        uses: actions/checkout@v3
+        # using personal fork of an action
+        # uses: russell-palolo/checkout@main
 
       # Runs a custom action from our repository
       - name: Say Hello
         uses: ./.github/actions/hello
 
-      # # Runs a list of commands using the runners shell
-      # - name: Run a multi-line script
-      #   run: |
-      #     echo Add other actions to build,
-      #     echo test, and deploy your project.
+      # Runs a list of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
