@@ -19,7 +19,7 @@ on:
 jobs:
   deploy:
     outputs:
-      outcome: ${{ steps.set-result.outputs.step-result }}
+      outcome: ${{ steps.set-result.output.step-result }}
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -34,5 +34,5 @@ jobs:
         run: echo "Deploying & uploading..."
       - name: set result output
         id: set-result
-        # run: echo "::set-output name=step-result::success"
-        run: echo 'step-result=success' >> $GITHUB_OUTPUT
+        run: echo "::set-output name=step-result::success"
+        # run: echo 'step-result=success' >> $GITHUB_OUTPUT
