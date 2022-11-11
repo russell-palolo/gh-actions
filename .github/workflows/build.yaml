@@ -1,9 +1,9 @@
 name: build
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -79,18 +79,19 @@ jobs:
           path: dist
   deploy:
     needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Build Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: dist-files
-      - name: Output Build Artifacts
-        run: ls -al
-      - name: Output Script File Name
-        run: echo "${{ needs.build.outputs.script-file }}"
-      - name: Deployment
-        run: echo "Deploying..."
+    uses: ./.github/workflows/reusable.yaml
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - name: Get Build Artifacts
+    #     uses: actions/download-artifact@v3
+    #     with:
+    #       name: dist-files
+    #   - name: Output Build Artifacts
+    #     run: ls -al
+    #   - name: Output Script File Name
+    #     run: echo "${{ needs.build.outputs.script-file }}"
+    #   - name: Deployment
+    #     run: echo "Deploying..."
   # if workflow execution fails output github context data
   report:
     needs:
