@@ -80,6 +80,8 @@ jobs:
   deploy:
     needs: build
     uses: ./.github/workflows/reusable.yaml
+    with:
+      artifact-name: dist-files
     # runs-on: ubuntu-latest
     # steps:
     #   - name: Get Build Artifacts
