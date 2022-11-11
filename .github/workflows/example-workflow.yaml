@@ -8,7 +8,7 @@
 # Flank capicola beef, tail tri-tip andouille alcatra sirloin burgdoggen.
 
 # This is a basic workflow to help you get started with Actions
-name: Example Workflow
+name: example workflow
 # The name of your workflow. GitHub displays the names of your workflows on your repository's "Actions" tab. If you omit name, GitHub sets it to the workflow file path relative to the root of the repository.
 
 run-name: Example Workflow by @${{ github.actor }}

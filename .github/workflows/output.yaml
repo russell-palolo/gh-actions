@@ -1,4 +1,4 @@
-name: Output information
+name: output context
 
 run-name: Output by @${{ github.actor }}
 
