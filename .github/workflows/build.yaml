@@ -21,6 +21,8 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      script-file: ${{ steps.publish.outputs.script-file }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
@@ -28,6 +30,11 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Publish JS filename
+        id: publish
+        # older form ouf set output which is deprecated but exists in palolo code
+        # run: find dist/assets/*.js -type f -execdir echo ':output script-file={}' >> $GITHUB_OUTPUT ';'
+        run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
       - name: Store Artifacts
         uses: actions/upload-artifact@v3
         with:
