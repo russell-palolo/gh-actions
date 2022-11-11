@@ -1,7 +1,7 @@
 name: Output information
 # The name of your workflow. GitHub displays the names of your workflows on your repository's "Actions" tab. If you omit name, GitHub sets it to the workflow file path relative to the root of the repository.
 
-run-name: OUtput by @${{ github.actor }}
+run-name: Output by @${{ github.actor }}
 # The name for workflow runs generated from the workflow. GitHub displays the workflow run name in the list of workflow runs on your repository's "Actions" tab. If run-name is omitted or is only whitespace, then the run name is set to event-specific information for the workflow run. For example, for a workflow triggered by a push or pull_request event, it is set as the commit message.
 
 on:
