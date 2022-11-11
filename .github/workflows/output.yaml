@@ -2,7 +2,7 @@ name: Output information
 
 run-name: Output by @${{ github.actor }}
 
-on
+on:
   workflow_dispatch:
 
 jobs:
