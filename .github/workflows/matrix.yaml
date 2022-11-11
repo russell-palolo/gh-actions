@@ -7,8 +7,9 @@ on:
 
 jobs:
   build:
+    continue-on-error: true
     strategy:
-      matricx:
+      matrix:
         node-version:
           - 12
           - 14
