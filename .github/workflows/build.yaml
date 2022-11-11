@@ -28,6 +28,13 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Store Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
 
   deploy:
     needs: build
