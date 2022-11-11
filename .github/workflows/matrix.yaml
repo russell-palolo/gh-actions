@@ -1,0 +1,30 @@
+name: Matrix Demo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matricx:
+        node-version:
+          - 12
+          - 14
+          - 16
+        os-system:
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.os-system }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
