@@ -1,0 +1,9 @@
+name: Output information
+on: workflow_dispatch
+jobs:
+  info:
+    runs-on: ubunut-latest
+    steps:
+      # https://docs.github.com/en/actions/learn-github-actions/contexts
+      - name: Output Github context
+        run: echo '${{ toJSON(github) }}'
