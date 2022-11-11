@@ -82,18 +82,7 @@ jobs:
     uses: ./.github/workflows/reusable.yaml
     with:
       artifact-name: dist-files
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - name: Get Build Artifacts
-    #     uses: actions/download-artifact@v3
-    #     with:
-    #       name: dist-files
-    #   - name: Output Build Artifacts
-    #     run: ls -al
-    #   - name: Output Script File Name
-    #     run: echo "${{ needs.build.outputs.script-file }}"
-    #   - name: Deployment
-    #     run: echo "Deploying..."
+      script-file: ${{ needs.build.outputs.script-file }}
   # if workflow execution fails output github context data
   report:
     needs:
