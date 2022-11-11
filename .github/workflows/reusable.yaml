@@ -1,6 +1,6 @@
 name: reusable
 on:
-  workflow-call:
+  workflow_call:
 
 jobs:
   deploy:
