@@ -16,11 +16,20 @@ on:
 
   # trigger this workflow on push to specified branches
   push:
-    branches: ["main"]
+    branches:
+      - main
+    # only run if a file changes in one of the paths
+    paths:
+      - ".github/workflows/*"
+
+    # only run no file changes in one of the paths
+    paths-ignore:
+      - ".github/actions/*"
 
   # trigger this workflow on pull requests to specified branches
   pull_request:
-    branches: ["main"]
+    branches:
+      - main
 
   # allow this workflow to be manually triggered from the github ui
   workflow_dispatch:
@@ -28,14 +37,6 @@ on:
 # A workflow run is made up of one or more jobs
 # jobs can run sequentially or in parallel
 jobs:
-  info:
-    runs-on: ubunut-latest
-    steps:
-      # https://docs.github.com/en/actions/learn-github-actions/contexts
-      - name: Output Github context
-        run: echo '${{ toJSON(github) }}'
-
-  # This workflow contains a single job called "hello"
   hello:
     # The type of runner that the job will run on
     # see https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
@@ -61,7 +62,6 @@ jobs:
           sleep 3
           echo test, and deploy your project.\
           sleep 2
-
   build:
     needs:
       - hello
