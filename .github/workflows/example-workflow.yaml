@@ -28,6 +28,13 @@ on:
 # A workflow run is made up of one or more jobs
 # jobs can run sequentially or in parallel
 jobs:
+  info:
+    runs-on: ubunut-latest
+    steps:
+      # https://docs.github.com/en/actions/learn-github-actions/contexts
+      - name: Output Github context
+        run: echo '${{ toJSON(github) }}'
+
   # This workflow contains a single job called "hello"
   hello:
     # The type of runner that the job will run on
