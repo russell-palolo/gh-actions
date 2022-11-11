@@ -10,6 +10,8 @@
 # This is a basic workflow to help you get started with Actions
 name: Example Workflow
 
+run-name: Example Workflow by @${{ github.actor }}
+
 # Controls when the workflow will run
 on:
   # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
