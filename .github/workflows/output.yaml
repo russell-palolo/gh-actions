@@ -1,5 +1,17 @@
 name: Output information
-on: workflow_dispatch
+
+on:
+  # trigger this workflow on push to specified branches
+  push:
+    branches:
+      - main
+
+    # only run no file changes in one of the paths
+    paths-ignore:
+      - ".github/actions/*"
+
+  workflow_dispatch:
+
 jobs:
   info:
     runs-on: ubuntu-latest

@@ -22,10 +22,6 @@ on:
     paths:
       - ".github/workflows/*"
 
-    # only run no file changes in one of the paths
-    paths-ignore:
-      - ".github/actions/*"
-
   # trigger this workflow on pull requests to specified branches
   pull_request:
     branches:
