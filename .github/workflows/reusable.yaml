@@ -14,12 +14,12 @@ on:
     outputs:
       result:
         description: the result of the deployment operation
-        value: ${{ jobs.deploy.output.outcome }}
+        value: ${{ jobs.deploy.outputs.outcome }}
 
 jobs:
   deploy:
     outputs:
-      outcome: ${{ steps.set-result.output.step-result }}
+      outcome: ${{ steps.set-result.outputs.step-result }}
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
