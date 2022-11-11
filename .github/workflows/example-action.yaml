@@ -32,7 +32,9 @@ jobs:
       # using official github maintained action
       # - uses: actions/checkout@v3
       # using personal fork of an action
-      - uses: russell-palolo/checkout@main
+
+      - name: Checkout
+        uses: russell-palolo/checkout@main
 
       # Runs a custom action from our repository
       - uses: ./.github/actions/hello
