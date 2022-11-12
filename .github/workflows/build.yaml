@@ -16,7 +16,7 @@ jobs:
         id: fetch
         uses: ./.github/actions/node-modules
       - name: Cache Status
-        run: echo "cache used? ${{ steps.fetch.outputs.used-cache }}"
+        run: echo "cache used? ${{ steps.fetch.outputs.caching }}"
       - name: Lint
         run: npm run lint
   test:

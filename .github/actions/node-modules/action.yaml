@@ -8,9 +8,9 @@ inputs:
     default: true
 
 outputs:
-  used-cache:
+  caching:
     description: report if cache was used
-    value: ${{ steps.fetching.outputs.cached }}
+    value: ${{ steps.fetching.outputs.caching }}
 
 runs:
   using: composite
@@ -27,6 +27,5 @@ runs:
       id: fetching
       run: |
         npm ci
-        echo '${{ inputs.caching }}'
-        echo 'cached=probably' >> $GITHUB_OUTPUT
+        echo "caching=${{ inputs.caching }}" >> $GITHUB_OUTPUT
       shell: bash
