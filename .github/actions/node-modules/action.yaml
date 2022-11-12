@@ -10,7 +10,7 @@ inputs:
 outputs:
   caching:
     description: report if cache was used
-    value: ${{ steps.fetch.outputs.caching }}
+    value: ${{ steps.fetching.outputs.caching }}
 
 runs:
   using: composite
@@ -24,7 +24,7 @@ runs:
         key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
     - name: Fetch Dependencies
       if: inputs.caching != 'true' || steps.cache.outputs.cache-hit != 'true'
-      id: fetch
+      id: fetching
       run: |
         npm ci
         echo "caching=${{ inputs.caching }}" >> $GITHUB_OUTPUT
