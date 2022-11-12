@@ -10,7 +10,8 @@ inputs:
 outputs:
   used-cache:
     description: report if cache was used
-    value: ${{ steps.install.outputs.cache }}
+    value: cache was used
+    # value: ${{ steps.install.outputs.cache }}
 
 runs:
   using: composite
@@ -29,4 +30,4 @@ runs:
         npm ci
         echo "::set-output name=cache::'${{ inputs.caching }}'"
       shell: bash
-      # echo "caching=${{ inputs.caching }}" >> $GITHUB_OUTPUT
+      # echo "cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT
