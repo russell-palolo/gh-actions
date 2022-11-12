@@ -12,15 +12,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
-      - name: Cache Dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Fetch Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+      - name: Fetch and Cache Dependencies
+        uses: ./.github/actions/node-modules
       - name: Lint
         run: npm run lint
   test:
@@ -29,15 +22,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
-      - name: Cache Dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Fetch Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+      - name: Fetch and Cache Dependencies
+        uses: ./.github/actions/node-modules
       - name: Test
         id: test-step
         run: npm run test
@@ -56,15 +42,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
-      - name: Cache Dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Fetch Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+      - name: Fetch and Cache Dependencies
+        uses: ./.github/actions/node-modules
       - name: Build
         run: npm run build
       - name: Publish JS filename

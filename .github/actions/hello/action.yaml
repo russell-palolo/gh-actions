@@ -1,13 +1,16 @@
-name: Setup
-
-description: "Setup the database for other workflows"
-
+name: Hello
+description: Say Hello
 runs:
-  using: "composite"
-
+  using: composite
   steps:
-    - name: Run a one-line script
-      run: |
-        echo Hello, world!
-        sleep 2
+    - name: Cache Dependencies
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      shell: bash
+    - name: Fetch Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci
       shell: bash
