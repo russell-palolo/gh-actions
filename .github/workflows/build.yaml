@@ -15,6 +15,8 @@ jobs:
       - name: Fetch and Cache Dependencies
         id: fetch
         uses: ./.github/actions/node-modules
+        with:
+          caching: false
       - name: Cache Status
         run: echo "cache used? ${{ steps.fetch.outputs.used-cache }}"
       - name: Lint
