@@ -5,7 +5,7 @@ inputs:
   caching:
     description: enable caching of dependencies
     required: false
-    default: true
+    default: "true"
 
 outputs:
   caching:
