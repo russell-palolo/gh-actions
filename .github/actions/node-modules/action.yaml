@@ -5,12 +5,12 @@ inputs:
   caching:
     description: enable caching of dependencies
     required: false
-    default: "true"
+    default: true
 
 outputs:
-  caching:
+  used-cache:
     description: report if cache was used
-    value: ${{ steps.fetching.outputs.caching }}
+    value: ${{ steps.fetching.outputs.cached }}
 
 runs:
   using: composite
@@ -27,7 +27,6 @@ runs:
       id: fetching
       run: |
         npm ci
-        echo 'hello? ${{ inputs.caching }}'
-        echo "hello? ${{ inputs.caching }}"
-        echo caching=${{ inputs.caching }} >> $GITHUB_OUTPUT
+        echo '${{ inputs.caching }}'
+        echo 'cached=probably' >> $GITHUB_OUTPUT
       shell: bash
