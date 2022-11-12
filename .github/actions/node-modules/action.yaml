@@ -27,5 +27,5 @@ runs:
       id: fetch
       run: |
         npm ci
-        echo 'caching=${{ inputs.caching }}' >> $GITHUB_OUTPUT
+        echo "caching=${{ inputs.caching }}" >> $GITHUB_OUTPUT
       shell: bash
