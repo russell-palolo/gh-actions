@@ -13,7 +13,10 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
       - name: Fetch and Cache Dependencies
+        id: fetch
         uses: ./.github/actions/node-modules
+      - name: Cache Status
+        run: echo "cache used? ${{ steps.fetch.outputs.caching }}"
       - name: Lint
         run: npm run lint
   test:

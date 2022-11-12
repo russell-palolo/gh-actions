@@ -1,10 +1,16 @@
 name: NodeModules
 description: Cache and Fetch Node dependencies
+
 inputs:
   caching:
     description: enable caching of dependencies
     required: false
     default: true
+
+outputs:
+  caching:
+    description: report if cache was used
+    value: ${{ steps.fetch.outputs.caching }}
 
 runs:
   using: composite
@@ -18,5 +24,8 @@ runs:
         key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
     - name: Fetch Dependencies
       if: inputs.caching != 'true' || steps.cache.outputs.cache-hit != 'true'
-      run: npm ci
+      id: fetch
+      run: |
+        npm ci
+        echo 'caching=${{ inputs.caching }}' >> $GITHUB_OUTPUT
       shell: bash
