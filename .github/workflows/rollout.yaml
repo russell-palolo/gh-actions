@@ -1,0 +1,131 @@
+#
+# The rollout primitive
+
+# 1) Checkout the config code
+# 2) Setup AWS and Docker creds
+# 3) IFF we are in prod or demo, setup Account Terraform (dev needs to be manual since we share envs on the account)
+# 4) Push the environment-level Terraform
+# 5) Deploy our cluster-level k8s dependencies
+# 6) Deploy our app Helm chart
+# 7) Push our alerts Terraform now that our code is up and running
+#
+# JOBS
+# - rollout
+#
+# Used by:
+# - ./.github/workflows/rollout-cd-staging
+# - ./.github/workflows/rollout-everything-with-docker-build
+# - ./.github/workflows/rollout-staging-to-prod-or-demo
+#
+# Note: This is our rollout workflow
+# The problem with this is that we have lots of other workflows that are X and Rollout so they use workflow_call
+# The other half of the problem is that you can only stack workflows 1 deep.
+# So this can only call actions, not workflows.
+#
+name: Rollout
+
+on:
+  workflow_call:
+    inputs:
+      docker-tag:
+        type: string
+        required: true
+        description: The tag to push to the environment
+      deploy-environment:
+        type: string
+        description: Which environment to push to
+        required: true
+      deploy-ref:
+        type: string
+        description: The branch, tag or SHA to use for Helm/EKS/deployment configuration files and deployment scripts
+        required: true
+      should-deploy-alerts:
+        type: string
+        required: false
+        default: true
+        description: Deploy Alerts when checked
+      should-deploy-cluster-dependencies:
+        type: string
+        required: false
+        default: false
+        description: Deploy Cluster Dependencies when checked
+      should-deploy-terraform:
+        type: string
+        required: false
+        default: true
+        description: Deploy Terraform when checked
+      skip-app-schema-upgrade:
+        type: string
+        required: false
+        default: false
+        description: Skip schema upgrades when checked (Be careful!)
+  workflow_dispatch:
+    inputs:
+      docker-tag:
+        type: string
+        required: true
+        description: The tag to push to the environment
+      deploy-environment:
+        type: choice
+        description: Which environment to push to
+        required: true
+        default: alpha
+        options:
+          - alpha
+          - staging
+          - demo
+          - prod
+      deploy-ref:
+        description: The branch, tag or SHA to use for Helm/EKS/deployment configuration files and deployment scripts
+        required: true
+        default: main
+      should-deploy-alerts:
+        type: string
+        required: false
+        default: true
+        description: Deploy Alerts when checked
+      should-deploy-cluster-dependencies:
+        type: string
+        required: false
+        default: false
+        description: Deploy Cluster Dependencies when checked
+      should-deploy-terraform:
+        type: string
+        required: false
+        default: true
+        description: Deploy Terraform when checked
+      skip-app-schema-upgrade:
+        type: string
+        required: false
+        default: false
+        description: Skip schema upgrades when checked (Be careful!)
+
+env:
+  # You can't put AWS Secrets here because we overwrite them in our setup-deployment step
+  AWS_DEFAULT_REGION: us-west-2
+  PALOLO_ENV: ${{ inputs.deploy-environment || github.event.inputs.deploy-environment }}
+
+jobs:
+  # TODO: One day, make this a matrix and take an input target-deploy
+  # rollout:
+  #   concurrency: rollout-${{ inputs.deploy-environment || github.event.inputs.deploy-environment }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Parse inputs
+  #       id: inputs
+  #       run: >
+  #         echo ::set-output name=deploy-ref::${{ inputs.deploy-ref || github.event.inputs.deploy-ref }};
+  #         echo ::set-output name=docker-ref::${{ inputs.docker-tag || github.event.inputs.docker-tag }};
+  #         echo ::set-output name=deploy-environment::${{ inputs.deploy-environment || github.event.inputs.deploy-environment }};
+  #         echo ::set-output name=skip-schema-upgrade::${{ inputs.skip-schema-upgrade || github.event.inputs.skip-schema-upgrade }};
+  #         echo ::set-output name=should-deploy-terraform::${{ inputs.should-deploy-terraform || github.event.inputs.should-deploy-terraform }};
+  #         echo ::set-output name=should-deploy-cluster-dependencies::${{ inputs.should-deploy-cluster-dependencies || github.event.inputs.should-deploy-cluster-dependencies }};
+  inspect:
+    name: Inspect Inputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print input values to STDOUT
+        run: |
+          echo should-deploy-alerts ${{ inputs.should-deploy-alerts || github.event.inputs.should-deploy-alerts }} 
+          echo should-deploy-cluster-dependencies ${{ inputs.should-deploy-cluster-dependencies || github.event.inputs.should-deploy-cluster-dependencies }} 
+          echo should-deploy-terraform ${{ inputs.should-deploy-terraform || github.event.inputs.should-deploy-terraform }}

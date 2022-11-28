@@ -1,0 +1,85 @@
+#
+# This is our CD pipeline.
+#
+# Phase 1: Build a Docker Image + validate the build with CI
+# Phase 2: Run a rollout to staging specifically
+#
+# JOBS
+# - sha-lookup
+# - ci
+# - docker-push
+# - rollout-staging
+#
+# TRIGGER:
+# - push (main)
+# - manual
+#
+# WORKFLOWS
+# - ./.github/workflows/ci.yaml
+# - ./.github/workflows/docker-push.yaml
+# - ./.github/workflows/rollout.yaml
+#
+name: Rollout - CD - staging
+
+# TODO: Once we get this into production, see what inputs we care about.
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+    inputs:
+      deploy-ref:
+        description: "The branch, tag or SHA to make into a Docker image."
+        required: true
+        default: "main"
+      force-build:
+        description: "Force running a build even if this tag already exists"
+        type: boolean
+        required: true
+        default: false
+      should-deploy-alerts:
+        type: boolean
+        required: false
+        default: false
+        description: Deploy Alerts when checked
+      should-deploy-cluster-dependencies:
+        type: boolean
+        required: false
+        default: false
+        description: Deploy Cluster Dependencies when checked
+      should-deploy-terraform:
+        type: boolean
+        required: false
+        default: false
+        description: Deploy Terraform when checked
+      skip-app-schema-upgrade:
+        type: boolean
+        required: false
+        default: false
+        description: Skip schema upgrades when checked (Be careful!)
+
+jobs:
+  # Note: This cannot safely be made an action because of the multiple checkout statements
+  # This is copied here and in our docker-push workflow that we call down below
+  inspect:
+    name: Inspect Inputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print input values to STDOUT
+        run: |
+          echo should-deploy-alerts ${{ inputs.should-deploy-alerts }} # returns empty
+          echo should-deploy-cluster-dependencies ${{ inputs.should-deploy-cluster-dependencies || false }} # returns false
+          echo should-deploy-terraform ${{ inputs.should-deploy-terraform || false }}
+  rollout:
+    name: Rollout
+    uses: ./.github/workflows/rollout.yaml
+    secrets: inherit
+    with:
+      docker-tag: ${{ needs.docker-push.outputs.docker-tag }}
+      deploy-ref: ${{ needs.sha-lookup.outputs.sha }}
+      deploy-environment: staging
+      skip-app-schema-upgrade: ${{ github.event.inputs.skip-app-schema-upgrade || false }}
+      should-deploy-alerts: ${{ github.event.inputs.should-deploy-alerts || false }}
+      should-deploy-cluster-dependencies: ${{ github.event.inputs.should-deploy-cluster-dependencies || false }}
+      should-deploy-terraform: ${{ github.event.inputs.should-deploy-terraform || false }}
